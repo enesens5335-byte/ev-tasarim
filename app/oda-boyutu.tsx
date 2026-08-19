@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Pressable, TextInput, ScrollView } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useState } from 'react';
+import { AppColors } from '../constants/theme';
 
 export default function OdaBoyutuScreen() {
   const { odaTipi, secimler } = useLocalSearchParams<{ odaTipi: string; secimler: string }>();
@@ -9,15 +10,11 @@ export default function OdaBoyutuScreen() {
 
   const devamEt = () => {
     router.push({
-      pathname: '/sonuc' ,
-      params: {
-        odaTipi,
-        secimler,
-        en,
-        boy,
-      },
+      pathname: '/sonuc' as any,
+      params: { odaTipi, secimler, en, boy },
     });
   };
+
   const gecerliMi = en.trim().length > 0 && boy.trim().length > 0;
 
   return (
@@ -31,6 +28,7 @@ export default function OdaBoyutuScreen() {
           style={styles.input}
           keyboardType="numeric"
           placeholder="Örn: 4"
+          placeholderTextColor={AppColors.textSecondary}
           value={en}
           onChangeText={setEn}
         />
@@ -42,6 +40,7 @@ export default function OdaBoyutuScreen() {
           style={styles.input}
           keyboardType="numeric"
           placeholder="Örn: 5"
+          placeholderTextColor={AppColors.textSecondary}
           value={boy}
           onChangeText={setBoy}
         />
@@ -59,29 +58,30 @@ export default function OdaBoyutuScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, gap: 20, paddingBottom: 60 },
-  title: { fontSize: 24, fontWeight: 'bold' },
-  subtitle: { fontSize: 14, color: '#666', marginBottom: 10 },
+  container: { padding: 20, gap: 20, paddingBottom: 60, backgroundColor: AppColors.background, flexGrow: 1 },
+  title: { fontSize: 24, fontWeight: 'bold', color: AppColors.textPrimary },
+  subtitle: { fontSize: 14, color: AppColors.textSecondary, marginBottom: 10 },
   inputBlok: { gap: 8 },
-  label: { fontSize: 16, fontWeight: '600', color: '#333' },
+  label: { fontSize: 16, fontWeight: '600', color: AppColors.textPrimary },
   input: {
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: AppColors.border,
     borderRadius: 12,
     paddingVertical: 14,
     paddingHorizontal: 16,
     fontSize: 16,
-    backgroundColor: '#fafafa',
+    backgroundColor: AppColors.card,
+    color: AppColors.textPrimary,
   },
   devamButon: {
-    backgroundColor: '#222',
+    backgroundColor: AppColors.accent,
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: 'center',
     marginTop: 20,
   },
   devamButonPasif: {
-    backgroundColor: '#ccc',
+    backgroundColor: AppColors.disabled,
   },
-  devamButonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  devamButonText: { color: AppColors.accentText, fontSize: 16, fontWeight: '700' },
 });

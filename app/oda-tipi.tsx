@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import { router } from 'expo-router';
+import { AppColors } from '../constants/theme';
 
 const odaTipleri = [
   { id: 'oturma', ad: 'Oturma Odası' },
@@ -12,7 +13,7 @@ const odaTipleri = [
 
 export default function OdaTipiScreen() {
   const seciminiYap = (odaId: string) => {
-    router.push({ pathname: '/kategori-sec', params: { odaTipi: odaId } });
+    router.push({ pathname: '/kategori-sec' as any, params: { odaTipi: odaId } });
   };
 
   return (
@@ -32,12 +33,14 @@ export default function OdaTipiScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, gap: 12 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16 },
+  container: { padding: 20, gap: 12, backgroundColor: AppColors.background, flexGrow: 1 },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16, color: AppColors.textPrimary },
   card: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: AppColors.card,
     padding: 20,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: AppColors.border,
   },
-  cardText: { fontSize: 18, fontWeight: '500' },
+  cardText: { fontSize: 18, fontWeight: '500', color: AppColors.textPrimary },
 });

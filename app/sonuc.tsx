@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
+import { AppColors } from '../constants/theme';
 
 const odaAdlari: Record<string, string> = {
   oturma: 'Oturma Odası',
@@ -58,30 +59,30 @@ export default function SonucScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, gap: 14, paddingBottom: 60 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 8 },
+  container: { padding: 20, gap: 14, paddingBottom: 60, backgroundColor: AppColors.background, flexGrow: 1 },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 8, color: AppColors.textPrimary },
   kart: {
-    backgroundColor: '#f7f7f7',
+    backgroundColor: AppColors.card,
     borderRadius: 12,
     padding: 16,
     gap: 4,
   },
-  kartBaslik: { fontSize: 13, color: '#888', fontWeight: '600' },
-  kartDeger: { fontSize: 17, color: '#222', fontWeight: '600' },
+  kartBaslik: { fontSize: 13, color: AppColors.textSecondary, fontWeight: '600' },
+  kartDeger: { fontSize: 17, color: AppColors.textPrimary, fontWeight: '600' },
   uretButon: {
-    backgroundColor: '#ccc',
+    backgroundColor: AppColors.disabled,
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: 'center',
     marginTop: 24,
   },
-  uretButonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  uretButonText: { color: AppColors.accentText, fontSize: 16, fontWeight: '700' },
   baştanButon: {
     paddingVertical: 14,
     borderRadius: 14,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#222',
+    borderColor: AppColors.accent,
   },
-  baştanButonText: { color: '#222', fontSize: 15, fontWeight: '600' },
+  baştanButonText: { color: AppColors.accent, fontSize: 15, fontWeight: '600' },
 });

@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useState } from 'react';
+import { AppColors } from '../constants/theme';
 
 const odaKategorileri: Record<string, { baslik: string; secenekler: string[] }[]> = {
   oturma: [
@@ -43,7 +44,7 @@ export default function KategoriSecScreen() {
 
   const devamEt = () => {
     router.push({
-      pathname: '/oda-boyutu',
+      pathname: '/oda-boyutu' as any,
       params: { odaTipi, secimler: JSON.stringify(secimler) },
     });
   };
@@ -93,34 +94,34 @@ export default function KategoriSecScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, gap: 20, paddingBottom: 60 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 8 },
+  container: { padding: 20, gap: 20, paddingBottom: 60, backgroundColor: AppColors.background, flexGrow: 1 },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 8, color: AppColors.textPrimary },
   kategoriBlok: { gap: 10 },
-  kategoriBaslik: { fontSize: 16, fontWeight: '600', color: '#333' },
+  kategoriBaslik: { fontSize: 16, fontWeight: '600', color: AppColors.textPrimary },
   secenekRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   secenekChip: {
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 20,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: AppColors.card,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: AppColors.border,
   },
   secenekChipAktif: {
-    backgroundColor: '#222',
-    borderColor: '#222',
+    backgroundColor: AppColors.accent,
+    borderColor: AppColors.accent,
   },
-  secenekText: { fontSize: 14, color: '#333' },
-  secenekTextAktif: { color: '#fff', fontWeight: '600' },
+  secenekText: { fontSize: 14, color: AppColors.textPrimary },
+  secenekTextAktif: { color: AppColors.accentText, fontWeight: '600' },
   devamButon: {
-    backgroundColor: '#222',
+    backgroundColor: AppColors.accent,
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: 'center',
     marginTop: 20,
   },
   devamButonPasif: {
-    backgroundColor: '#ccc',
+    backgroundColor: AppColors.disabled,
   },
-  devamButonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  devamButonText: { color: AppColors.accentText, fontSize: 16, fontWeight: '700' },
 });
