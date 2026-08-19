@@ -4,13 +4,13 @@ import { AppColors } from '../constants/theme';
  import ProgressBar from '../components/ProgressBar';
 
 const odaTipleri = [
-  { id: 'oturma', ad: 'Oturma Odası' },
-  { id: 'yatak', ad: 'Yatak Odası' },
-  { id: 'mutfak', ad: 'Mutfak' },
-  { id: 'banyo', ad: 'Banyo' },
-  { id: 'cocuk', ad: 'Çocuk Odası' },
-  { id: 'calisma', ad: 'Çalışma Odası' },
-  { id: 'oyun', ad: 'Oyun Odası' }
+  { id: 'oturma', ad: 'Oturma Odası', ikon: '🛋️' },
+  { id: 'yatak', ad: 'Yatak Odası', ikon: '🛏️' },
+  { id: 'mutfak', ad: 'Mutfak', ikon: '🍳' },
+  { id: 'banyo', ad: 'Banyo', ikon: '🛁' },
+  { id: 'cocuk', ad: 'Çocuk Odası', ikon: '🧸' },
+  { id: 'calisma', ad: 'Çalışma Odası', ikon: '💼' },
+  { id: 'oyun', ad: 'Oyun Odası', ikon: '🎮' },
 ];
 
 export default function OdaTipiScreen() {
@@ -26,14 +26,15 @@ export default function OdaTipiScreen() {
   <Text style={styles.title}>Oda Tipini Seç</Text>
   ...
       {odaTipleri.map((oda) => (
-        <Pressable
-          key={oda.id}
-          style={styles.card}
-          onPress={() => seciminiYap(oda.id)}
-        >
-          <Text style={styles.cardText}>{oda.ad}</Text>
-        </Pressable>
-      ))}
+  <Pressable
+    key={oda.id}
+    style={styles.card}
+    onPress={() => seciminiYap(oda.id)}
+  >
+    <Text style={styles.cardIcon}>{oda.ikon}</Text>
+    <Text style={styles.cardText}>{oda.ad}</Text>
+  </Pressable>
+))}
     </ScrollView>
   );
 }
@@ -42,11 +43,17 @@ const styles = StyleSheet.create({
   container: { padding: 20, gap: 12, backgroundColor: AppColors.background, flexGrow: 1 },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16, color: AppColors.textPrimary },
   card: {
-    backgroundColor: AppColors.card,
-    padding: 20,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: AppColors.border,
-  },
-  cardText: { fontSize: 18, fontWeight: '500', color: AppColors.textPrimary },
+  backgroundColor: AppColors.card,
+  padding: 20,
+  borderRadius: 12,
+  borderWidth: 1,
+  borderColor: AppColors.border,
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 14,
+},
+cardIcon: {
+  fontSize: 28,
+},
+cardText: { fontSize: 18, fontWeight: '500', color: AppColors.textPrimary },
 });
