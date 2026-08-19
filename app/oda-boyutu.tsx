@@ -9,7 +9,7 @@ export default function OdaBoyutuScreen() {
 
   const devamEt = () => {
     router.push({
-      pathname: '/sonuc' as any,
+      pathname: '/sonuc' ,
       params: {
         odaTipi,
         secimler,
