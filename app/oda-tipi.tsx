@@ -9,6 +9,7 @@ const odaTipleri = [
   { id: 'banyo', ad: 'Banyo' },
   { id: 'cocuk', ad: 'Çocuk Odası' },
   { id: 'calisma', ad: 'Çalışma Odası' },
+  { id: 'oyun', ad: 'Oyun Odası' }
 ];
 
 export default function OdaTipiScreen() {
