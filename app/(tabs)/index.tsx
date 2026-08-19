@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { router } from 'expo-router';
 
 export default function HomeScreen() {
   return (
@@ -9,7 +10,7 @@ export default function HomeScreen() {
         Hayalindeki evi kendi tarzınla oluştur.
       </Text>
 
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} onPress={() => router.push('/oda-tipi')}>
         <Text style={styles.buttonText}>Tasarıma Başla</Text>
       </Pressable>
     </View>
