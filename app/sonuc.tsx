@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { AppColors } from '../constants/theme';
+import ProgressBar from '../components/ProgressBar';
 
 const odaAdlari: Record<string, string> = {
   oturma: 'Oturma Odası',
@@ -28,7 +29,8 @@ export default function SonucScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Özet</Text>
+  <ProgressBar step={4} total={4} />
+  <Text style={styles.title}>Özet</Text>
 
       <View style={styles.kart}>
         <Text style={styles.kartBaslik}>Oda Tipi</Text>

@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { AppColors } from '../constants/theme';
+ import ProgressBar from '../components/ProgressBar';
 
 const odaTipleri = [
   { id: 'oturma', ad: 'Oturma Odası' },
@@ -18,8 +19,12 @@ export default function OdaTipiScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Oda Tipini Seç</Text>
+   
+// ...
+<ScrollView contentContainerStyle={styles.container}>
+  <ProgressBar step={1} total={4} />
+  <Text style={styles.title}>Oda Tipini Seç</Text>
+  ...
       {odaTipleri.map((oda) => (
         <Pressable
           key={oda.id}

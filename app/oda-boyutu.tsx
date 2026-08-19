@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Pressable, TextInput, ScrollView } from 'react-
 import { useLocalSearchParams, router } from 'expo-router';
 import { useState } from 'react';
 import { AppColors } from '../constants/theme';
+import ProgressBar from '../components/ProgressBar';
 
 export default function OdaBoyutuScreen() {
   const { odaTipi, secimler } = useLocalSearchParams<{ odaTipi: string; secimler: string }>();
@@ -18,8 +19,12 @@ export default function OdaBoyutuScreen() {
   const gecerliMi = en.trim().length > 0 && boy.trim().length > 0;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Oda Boyutu</Text>
+    
+// ...
+<ScrollView contentContainerStyle={styles.container}>
+  <ProgressBar step={3} total={4} />
+  <Text style={styles.title}>Oda Boyutu</Text>
+  ...
       <Text style={styles.subtitle}>Odanın en ve boy ölçülerini metre cinsinden gir.</Text>
 
       <View style={styles.inputBlok}>

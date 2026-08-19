@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useState } from 'react';
 import { AppColors } from '../constants/theme';
+import ProgressBar from '../components/ProgressBar';
 
 const odaTipleri = [
   { id: 'oturma', ad: 'Oturma Odası' },
@@ -78,9 +79,12 @@ export default function KategoriSecScreen() {
   const tumuSecildiMi = kategoriler.every((k) => secimler[k.baslik]);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Detayları Seç</Text>
-
+    
+// ...
+<ScrollView contentContainerStyle={styles.container}>
+  <ProgressBar step={2} total={4} />
+  <Text style={styles.title}>Detayları Seç</Text>
+  ...
       {kategoriler.map((kategori) => (
         <View key={kategori.baslik} style={styles.kategoriBlok}>
           <Text style={styles.kategoriBaslik}>{kategori.baslik}</Text>
