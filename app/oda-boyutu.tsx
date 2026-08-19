@@ -9,7 +9,7 @@ export default function OdaBoyutuScreen() {
 
   const devamEt = () => {
     router.push({
-      pathname: '/sonuc',
+      pathname: '/sonuc' as any,
       params: {
         odaTipi,
         secimler,
@@ -18,7 +18,6 @@ export default function OdaBoyutuScreen() {
       },
     });
   };
-
   const gecerliMi = en.trim().length > 0 && boy.trim().length > 0;
 
   return (
