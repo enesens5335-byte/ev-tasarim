@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { router } from 'expo-router';
+import { AppColors } from '../../constants/theme';
 
 export default function HomeScreen() {
   return (
@@ -23,32 +24,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 24,
-    backgroundColor: '#F7F5F2',
+    backgroundColor: AppColors.background,
   },
-
   title: {
     fontSize: 32,
     fontWeight: '800',
-    color: '#222',
+    color: AppColors.textPrimary,
     marginBottom: 12,
   },
-
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: AppColors.textSecondary,
     textAlign: 'center',
     marginBottom: 30,
   },
-
   button: {
-    backgroundColor: '#222',
+    backgroundColor: AppColors.accent,
     paddingVertical: 16,
     paddingHorizontal: 40,
     borderRadius: 14,
   },
-
   buttonText: {
-    color: '#fff',
+    color: AppColors.accentText,
     fontSize: 17,
     fontWeight: '700',
   },
