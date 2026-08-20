@@ -9,6 +9,8 @@ export default function OdaBoyutuScreen() {
   const [en, setEn] = useState('');
   const [boy, setBoy] = useState('');
 
+  const sayiFiltrele = (deger: string) => deger.replace(/[^0-9.,]/g, '');
+
   const devamEt = () => {
     router.push({
       pathname: '/sonuc' as any,
@@ -19,12 +21,9 @@ export default function OdaBoyutuScreen() {
   const gecerliMi = en.trim().length > 0 && boy.trim().length > 0;
 
   return (
-    
-// ...
-<ScrollView contentContainerStyle={styles.container}>
-  <ProgressBar step={3} total={4} />
-  <Text style={styles.title}>Oda Boyutu</Text>
-  ...
+    <ScrollView contentContainerStyle={styles.container}>
+      <ProgressBar step={3} total={4} />
+      <Text style={styles.title}>Oda Boyutu</Text>
       <Text style={styles.subtitle}>Odanın en ve boy ölçülerini metre cinsinden gir.</Text>
 
       <View style={styles.inputBlok}>
@@ -35,7 +34,7 @@ export default function OdaBoyutuScreen() {
           placeholder="Örn: 4"
           placeholderTextColor={AppColors.textSecondary}
           value={en}
-          onChangeText={setEn}
+          onChangeText={(deger) => setEn(sayiFiltrele(deger))}
         />
       </View>
 
@@ -47,7 +46,7 @@ export default function OdaBoyutuScreen() {
           placeholder="Örn: 5"
           placeholderTextColor={AppColors.textSecondary}
           value={boy}
-          onChangeText={setBoy}
+          onChangeText={(deger) => setBoy(sayiFiltrele(deger))}
         />
       </View>
 
