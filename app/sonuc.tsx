@@ -10,6 +10,7 @@ const odaAdlari: Record<string, string> = {
   banyo: 'Banyo',
   cocuk: 'Çocuk Odası',
   calisma: 'Çalışma Odası',
+  oyun: 'Oyun Odası',
 };
 
 export default function SonucScreen() {
@@ -27,10 +28,17 @@ export default function SonucScreen() {
     router.push('/');
   };
 
+  const odayiPlanla = () => {
+    router.push({
+      pathname: '/oda-planlayici' as any,
+      params: { odaTipi, secimler, en, boy },
+    });
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-  <ProgressBar step={4} total={4} />
-  <Text style={styles.title}>Özet</Text>
+      <ProgressBar step={4} total={4} />
+      <Text style={styles.title}>Özet</Text>
 
       <View style={styles.kart}>
         <Text style={styles.kartBaslik}>Oda Tipi</Text>
@@ -49,8 +57,8 @@ export default function SonucScreen() {
         </View>
       ))}
 
-      <Pressable style={styles.uretButon} disabled>
-        <Text style={styles.uretButonText}>Tasarımı Oluştur (Yakında)</Text>
+      <Pressable style={styles.uretButon} onPress={odayiPlanla}>
+        <Text style={styles.uretButonText}>Odayı Planla</Text>
       </Pressable>
 
       <Pressable style={styles.baştanButon} onPress={baştanBaşla}>
@@ -72,7 +80,7 @@ const styles = StyleSheet.create({
   kartBaslik: { fontSize: 13, color: AppColors.textSecondary, fontWeight: '600' },
   kartDeger: { fontSize: 17, color: AppColors.textPrimary, fontWeight: '600' },
   uretButon: {
-    backgroundColor: AppColors.disabled,
+    backgroundColor: AppColors.accent,
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: 'center',
