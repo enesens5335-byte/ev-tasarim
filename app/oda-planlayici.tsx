@@ -1,27 +1,18 @@
 import { View, Text, StyleSheet, PanResponder, Animated, Pressable, Dimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
+import Svg, { Rect, Line } from 'react-native-svg';
 import { AppColors } from '../constants/theme';
+import EsyaSvg from '../components/EsyaSvg';
 
-const emojiHaritasi: Record<string, string> = {
-  'PS Seti': '🎮', 'Gaming PC': '🖥️', 'Xbox Seti': '🎮', 'Retro Konsol Köşesi': '👾',
-  'Gaming Koltuk': '🪑', 'Bean Bag': '🛋️', 'L Koltuk': '🛋️', 'Kanepe': '🛋️',
-  'Projeksiyon': '📽️', 'Büyük TV': '📺', 'Çift Monitör Setup': '🖥️',
-  'RGB/LED Işık': '🌈', 'Neon Tabela': '💡', 'Sade Spot': '🔦',
-  'Bilardo/Langırt Masası': '🎱', 'Mini Bar': '🍹', 'Poster Duvarı': '🖼️',
-  'Düz Koltuk': '🛋️', 'Berjer': '🪑', 'Cam Sehpa': '🔷', 'Ahşap Sehpa': '🪵', 'Metal Sehpa': '⚙️',
-  'Avize': '💡', 'Spot': '🔦', 'Ayaklı Lamba': '🪔', 'TV Ünitesi': '📺', 'Şömine': '🔥',
-  'Tek Kişilik': '🛏️', 'Çift Kişilik': '🛏️', 'Baza': '🛏️', 'Gardolap': '🚪', 'Vestiyer': '👔',
-  'Başucu Lambası': '🪔', 'Modern': '🍽️', 'Klasik': '🏛️', 'Granit': '⬛', 'Mermer': '⬜',
-  'Gömme': '🚰', 'Çanak Lavabo': '🥣', 'Duşakabin': '🚿', 'Küvet': '🛁',
-  'Ranza': '🛏️', 'Ofis Koltuğu': '🪑', 'Ergonomik Koltuk': '🪑', 'Sade Sandalye': '🪑',
-  'L Masa': '🖥️', 'Düz Masa': '🖥️', 'Kitaplık': '📚',
-};
+const ESYA_GENISLIK = 66;
+const ESYA_YUKSEKLIK = 66;
+const MAX_OLCEK = 70;
+const DUVAR_KALINLIK = 8;
 
 type YerlesikEsya = {
   id: string;
   ad: string;
-  emoji: string;
   x: number;
   y: number;
   aci: number;
@@ -31,21 +22,29 @@ export default function OdaPlanlayiciScreen() {
   const { en, boy, secimler } = useLocalSearchParams<{ en: string; boy: string; secimler: string }>();
   const secimObj: Record<string, string> = secimler ? JSON.parse(secimler) : {};
 
-  const ekranGenislik = Dimensions.get('window').width - 40;
-  const enSayi = parseFloat(en.replace(',', '.')) || 4;
-  const boySayi = parseFloat(boy.replace(',', '.')) || 4;
-  const olcek = ekranGenislik / enSayi;
-  const odaGenislikPx = ekranGenislik;
+  const ekranGenislik = Math.min(Dimensions.get('window').width - 40, 500);
+  const enSayi = parseFloat((en || '').replace(',', '.')) || 4;
+  const boySayi = parseFloat((boy || '').replace(',', '.')) || 4;
+
+  const olcekGenislik = ekranGenislik / enSayi;
+  const olcek = Math.min(olcekGenislik, MAX_OLCEK);
+
+  const odaGenislikPx = enSayi * olcek;
   const odaYukseklikPx = boySayi * olcek;
 
-  const baslangicEsyalar: YerlesikEsya[] = Object.values(secimObj).map((ad, index) => ({
-    id: `${ad}-${index}`,
-    ad,
-    emoji: emojiHaritasi[ad] || '📦',
-    x: 30 + (index % 3) * 90,
-    y: 30 + Math.floor(index / 3) * 90,
-    aci: 0,
-  }));
+  const kolonSayisi = Math.max(1, Math.floor((odaGenislikPx - DUVAR_KALINLIK * 2) / (ESYA_GENISLIK + 12)));
+
+  const baslangicEsyalar: YerlesikEsya[] = Object.values(secimObj).map((ad, index) => {
+    const satir = Math.floor(index / kolonSayisi);
+    const kolon = index % kolonSayisi;
+    return {
+      id: `${ad}-${index}`,
+      ad,
+      x: DUVAR_KALINLIK + 6 + kolon * (ESYA_GENISLIK + 10),
+      y: DUVAR_KALINLIK + 6 + satir * (ESYA_YUKSEKLIK + 10),
+      aci: 0,
+    };
+  });
 
   const [esyalar, setEsyalar] = useState(baslangicEsyalar);
 
@@ -60,25 +59,68 @@ export default function OdaPlanlayiciScreen() {
       <Text style={styles.title}>Oda Planı</Text>
       <Text style={styles.subtitle}>Eşyaları sürükleyip döndür butonuyla çevirebilirsin.</Text>
 
-      <View style={[styles.oda, { width: odaGenislikPx, height: odaYukseklikPx }]}>
+      <View style={[styles.odaDis, { width: odaGenislikPx, height: odaYukseklikPx }]}>
+        <Svg width={odaGenislikPx} height={odaYukseklikPx} style={StyleSheet.absoluteFill}>
+          <Rect
+            x={0} y={0}
+            width={odaGenislikPx} height={odaYukseklikPx}
+            fill={AppColors.card}
+          />
+          <Rect
+            x={DUVAR_KALINLIK / 2} y={DUVAR_KALINLIK / 2}
+            width={odaGenislikPx - DUVAR_KALINLIK} height={odaYukseklikPx - DUVAR_KALINLIK}
+            fill="none"
+            stroke={AppColors.textPrimary}
+            strokeWidth={DUVAR_KALINLIK}
+          />
+          <Line
+            x1={odaGenislikPx * 0.35} y1={odaYukseklikPx}
+            x2={odaGenislikPx * 0.55} y2={odaYukseklikPx}
+            stroke={AppColors.card}
+            strokeWidth={DUVAR_KALINLIK + 2}
+          />
+        </Svg>
+
         {esyalar.map((esya) => (
-          <EsyaKutusu key={esya.id} esya={esya} setEsyalar={setEsyalar} onDonder={() => donder(esya.id)} />
+          <EsyaKutusu
+            key={esya.id}
+            esya={esya}
+            odaGenislikPx={odaGenislikPx}
+            odaYukseklikPx={odaYukseklikPx}
+            onDonder={() => donder(esya.id)}
+          />
         ))}
       </View>
+
+      <Text style={styles.kapiNotu}>▭ alttaki boşluk kapı</Text>
     </View>
   );
 }
 
 function EsyaKutusu({
   esya,
-  setEsyalar,
+  odaGenislikPx,
+  odaYukseklikPx,
   onDonder,
 }: {
   esya: YerlesikEsya;
-  setEsyalar: React.Dispatch<React.SetStateAction<YerlesikEsya[]>>;
+  odaGenislikPx: number;
+  odaYukseklikPx: number;
   onDonder: () => void;
 }) {
-  const pan = useRef(new Animated.ValueXY({ x: esya.x, y: esya.y })).current;
+  const konum = useRef({ x: esya.x, y: esya.y }).current;
+  const pan = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+
+  const sinirla = (x: number, y: number) => {
+    const minX = DUVAR_KALINLIK;
+    const minY = DUVAR_KALINLIK;
+    const maxX = Math.max(minX, odaGenislikPx - ESYA_GENISLIK - DUVAR_KALINLIK);
+    const maxY = Math.max(minY, odaYukseklikPx - ESYA_YUKSEKLIK - DUVAR_KALINLIK);
+    return {
+      x: Math.min(Math.max(x, minX), maxX),
+      y: Math.min(Math.max(y, minY), maxY),
+    };
+  };
 
   const panResponder = useRef(
     PanResponder.create({
@@ -86,8 +128,14 @@ function EsyaKutusu({
       onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
         useNativeDriver: false,
       }),
-      onPanResponderRelease: () => {
-        pan.extractOffset();
+      onPanResponderRelease: (_, gesture) => {
+        const yeniX = konum.x + gesture.dx;
+        const yeniY = konum.y + gesture.dy;
+        const sinirli = sinirla(yeniX, yeniY);
+        konum.x = sinirli.x;
+        konum.y = sinirli.y;
+        pan.setValue({ x: 0, y: 0 });
+        pan.flattenOffset();
       },
     })
   ).current;
@@ -97,6 +145,8 @@ function EsyaKutusu({
       style={[
         styles.esya,
         {
+          left: konum.x,
+          top: konum.y,
           transform: [
             { translateX: pan.x },
             { translateY: pan.y },
@@ -106,8 +156,8 @@ function EsyaKutusu({
       ]}
       {...panResponder.panHandlers}
     >
-      <Text style={styles.esyaEmoji}>{esya.emoji}</Text>
-      <Text style={styles.esyaAd}>{esya.ad}</Text>
+      <EsyaSvg ad={esya.ad} boyut={44} />
+      <Text style={styles.esyaAd} numberOfLines={1}>{esya.ad}</Text>
       <Pressable style={styles.donderButon} onPress={onDonder}>
         <Text style={styles.donderText}>↻</Text>
       </Pressable>
@@ -119,36 +169,30 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: AppColors.background },
   title: { fontSize: 24, fontWeight: 'bold', color: AppColors.textPrimary, marginBottom: 4 },
   subtitle: { fontSize: 13, color: AppColors.textSecondary, marginBottom: 16 },
-  oda: {
-    backgroundColor: AppColors.card,
-    borderWidth: 2,
-    borderColor: AppColors.border,
-    borderRadius: 8,
+  odaDis: {
     position: 'relative',
     overflow: 'hidden',
   },
+  kapiNotu: { fontSize: 11, color: AppColors.textSecondary, marginTop: 8 },
   esya: {
     position: 'absolute',
     backgroundColor: AppColors.background,
-    borderWidth: 1,
-    borderColor: AppColors.accent,
-    borderRadius: 10,
-    padding: 8,
+    borderRadius: 8,
+    padding: 4,
     alignItems: 'center',
-    width: 80,
+    width: ESYA_GENISLIK,
   },
-  esyaEmoji: { fontSize: 26 },
-  esyaAd: { fontSize: 10, color: AppColors.textPrimary, textAlign: 'center', marginTop: 2 },
+  esyaAd: { fontSize: 8, color: AppColors.textPrimary, textAlign: 'center', marginTop: 1 },
   donderButon: {
     position: 'absolute',
-    top: -10,
-    right: -10,
+    top: -8,
+    right: -8,
     backgroundColor: AppColors.accent,
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  donderText: { color: AppColors.accentText, fontSize: 14, fontWeight: 'bold' },
+  donderText: { color: AppColors.accentText, fontSize: 12, fontWeight: 'bold' },
 });
